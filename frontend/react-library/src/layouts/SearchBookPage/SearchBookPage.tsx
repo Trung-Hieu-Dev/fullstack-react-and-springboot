@@ -12,13 +12,16 @@ export const SearchBookPage = () => {
 
   // pagination hooks
   const [currentPage, setCurrentPage] = useState(1);
-  const [booksPerPage, setBooksPerPage] = useState(2);
+  const [booksPerPage, setBooksPerPage] = useState(6);
   const [totalAmountOfBooks, setTotalAmountOfBooks] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
   // search book by title
   const [search, setSearch] = useState("");
   const [searchUrl, setSearchUrl] = useState("");
+
+  // search book by category
+  const [categorySelection, setCategorySelection] = useState("Book Category");
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -69,7 +72,7 @@ export const SearchBookPage = () => {
       setHttpError(error.messages);
     });
     window.scrollTo(0, 0);
-  }, [booksPerPage, currentPage, searchUrl]);
+  }, [booksPerPage, currentPage, searchUrl, search, categorySelection]);
 
   if (isLoading) {
     return (
@@ -95,6 +98,24 @@ export const SearchBookPage = () => {
       setSearchUrl(
         `/search/findByTitleContaining?title=${search}&page=0&size=${booksPerPage}`
       );
+    }
+  };
+
+  // search book by category handler
+  const categoryField = (value: string) => {
+    if (
+      value.toLowerCase() === "fe" ||
+      value.toLowerCase() === "be" ||
+      value.toLowerCase() === "data" ||
+      value.toLowerCase() === "devops"
+    ) {
+      setCategorySelection(value);
+      setSearchUrl(
+        `/search/findByCategoryContaining?category=${value}&page=0&size=${booksPerPage}`
+      );
+    } else {
+      setCategorySelection("All");
+      setSearchUrl(`?page=0&size=${booksPerPage}`);
     }
   };
 
@@ -135,36 +156,57 @@ export const SearchBookPage = () => {
                   className="btn btn-secondary dropdown-toggle"
                   type="button"
                   id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Category
+                  {categorySelection}
                 </button>
                 <ul
                   className="dropdown-menu"
                   aria-labelledby="dropdownMenuButton1"
                 >
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => categoryField("All")}
+                    >
                       All
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => categoryField("FE")}
+                    >
                       Front End
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => categoryField("BE")}
+                    >
                       Back End
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => categoryField("Data")}
+                    >
                       Data
                     </a>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => categoryField("Devops")}
+                    >
                       DevOps
                     </a>
                   </li>
