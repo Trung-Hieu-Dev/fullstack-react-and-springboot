@@ -16,12 +16,21 @@ export const SearchBookPage = () => {
   const [totalAmountOfBooks, setTotalAmountOfBooks] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
+  // search book by title
+  const [search, setSearch] = useState("");
+  const [searchUrl, setSearchUrl] = useState("");
+
   useEffect(() => {
     const fetchBooks = async () => {
       const baseUrl: string = "http://localhost:8080/api/books";
-      const url: string = `${baseUrl}?page=${
-        currentPage - 1
-      }&size=${booksPerPage}`;
+
+      let url: string = "";
+
+      if (searchUrl === "") {
+        url = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
+      } else {
+        url = baseUrl + searchUrl;
+      }
 
       const response = await fetch(url);
 
@@ -54,12 +63,13 @@ export const SearchBookPage = () => {
       setBooks(loadedBooks);
       setIsLoading(false);
     };
+
     fetchBooks().catch((error: any) => {
       setIsLoading(false);
       setHttpError(error.messages);
     });
     window.scrollTo(0, 0);
-  }, [currentPage]);
+  }, [booksPerPage, currentPage, searchUrl]);
 
   if (isLoading) {
     return (
@@ -76,6 +86,17 @@ export const SearchBookPage = () => {
       </div>
     );
   }
+
+  // search book by title handler
+  const searchHandlerChange = () => {
+    if (search === "") {
+      setSearchUrl("");
+    } else {
+      setSearchUrl(
+        `/search/findByTitleContaining?title=${search}&page=0&size=${booksPerPage}`
+      );
+    }
+  };
 
   const indexOfLastBook: number = currentPage * booksPerPage;
   const indexOfFirstBook: number = indexOfLastBook - booksPerPage;
@@ -98,8 +119,14 @@ export const SearchBookPage = () => {
                   type="search"
                   placeholder="Search"
                   aria-labelledby="Search"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <button className="btn btn-outline-success">Search</button>
+                <button
+                  className="btn btn-outline-success"
+                  onClick={searchHandlerChange}
+                >
+                  Search
+                </button>
               </div>
             </div>
             <div className="col-4">
@@ -145,15 +172,32 @@ export const SearchBookPage = () => {
               </div>
             </div>
           </div>
-          <div className="mt-3">
-            <h5>Number of results: ({totalAmountOfBooks})</h5>
-          </div>
-          <p>
-            {indexOfFirstBook + 1} to {lastItem} of {totalAmountOfBooks} items:{" "}
-          </p>
-          {books.map((book) => (
-            <SearchBook book={book} key={book.id} />
-          ))}
+          {totalAmountOfBooks > 0 ? (
+            <>
+              <div className="mt-3">
+                <h5>Number of results: ({totalAmountOfBooks})</h5>
+              </div>
+              <p>
+                {indexOfFirstBook + 1} to {lastItem} of {totalAmountOfBooks}{" "}
+                items:{" "}
+              </p>
+              {books.map((book) => (
+                <SearchBook book={book} key={book.id} />
+              ))}
+            </>
+          ) : (
+            <div className="m-5">
+              <h3>Can't find what you are looking for?</h3>
+              <a
+                type="button"
+                href="#"
+                className="btn main-color btn-md px-4 me-md-2 fw-bold text-white"
+              >
+                Libraries Services
+              </a>
+            </div>
+          )}
+
           {totalPages > 1 && (
             <Pagination
               currentPage={currentPage}
