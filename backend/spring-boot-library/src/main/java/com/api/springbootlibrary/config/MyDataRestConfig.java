@@ -2,6 +2,7 @@ package com.api.springbootlibrary.config;
 
 
 import com.api.springbootlibrary.entity.Book;
+import com.api.springbootlibrary.entity.Review;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -24,9 +25,11 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
         // configure disable entity
         config.exposeIdsFor(Book.class);
+        config.exposeIdsFor(Review.class);
 
         // executing disable method
         disableHttpMethods(Book.class, config, theUnsupportedActions);
+        disableHttpMethods(Review.class, config, theUnsupportedActions);
 
         /* Configure CORS Mapping */
         cors.addMapping(config.getBasePath() + "/**")
@@ -37,7 +40,7 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
     * Accepting Reading Book Only
     */
     private void disableHttpMethods(
-            Class<Book> theClass,
+            Class theClass,
             RepositoryRestConfiguration config,
             HttpMethod[] theUnsupportedActions) {
 
