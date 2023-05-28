@@ -4,6 +4,7 @@ import { StarReview } from "../Utils/StarReview";
 import { CheckoutAndReviewBox } from "./CheckoutAndReviewBox";
 import BookModel from "../../models/BookModel";
 import ReviewModel from "../../models/ReviewModel";
+import { LatestReview } from "./LatestReview";
 
 export const BookCheckoutPage = () => {
   // Book state
@@ -136,12 +137,13 @@ export const BookCheckoutPage = () => {
               <h2>{book?.title}</h2>
               <h5 className="text-primary">{book?.author}</h5>
               <p className="lead">{book?.description}</p>
-              <StarReview rating={4.5} size={32} />
+              <StarReview rating={totalStars} size={32} />
             </div>
           </div>
           <CheckoutAndReviewBox book={book} mobile={false} />
         </div>
         <hr />
+        <LatestReview reviews={reviews} bookId={book?.id} mobile={false} />
       </div>
       {/* mobile */}
       <div className="container d-lg-none mt-5">
@@ -162,11 +164,12 @@ export const BookCheckoutPage = () => {
             <h2>{book?.title}</h2>
             <h5 className="text-primary">{book?.author}</h5>
             <p className="lead">{book?.description}</p>
-            <StarReview rating={4.5} size={32} />
+            <StarReview rating={totalStars} size={32} />
           </div>
         </div>
         <CheckoutAndReviewBox book={book} mobile={true} />
         <hr />
+        <LatestReview reviews={reviews} bookId={book?.id} mobile={true} />
       </div>
     </div>
   );
