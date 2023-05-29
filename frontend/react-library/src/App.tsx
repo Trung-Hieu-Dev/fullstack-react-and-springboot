@@ -16,7 +16,7 @@ import LoginWidget from "./Auth/LoginWidget";
 const oktaAuth = new OktaAuth(oktaConfig);
 
 function App() {
-  const customAuthHanlder = () => {
+  const customAuthHandler = () => {
     history.push("login");
   };
 
@@ -31,7 +31,7 @@ function App() {
       <Security
         oktaAuth={oktaAuth}
         restoreOriginalUri={restoreOriginalUri}
-        onAuthRequired={customAuthHanlder}
+        onAuthRequired={customAuthHandler}
       >
         <Navbar />
         <div className="flex-grow-1">
