@@ -68,8 +68,6 @@ export const BookCheckoutPage = () => {
 
       const responseData = responseJsonReviews._embedded.reviews;
 
-      console.log(responseData);
-
       const loadedReviews: ReviewModel[] = [];
 
       let weightedStarReviews: number = 0;
