@@ -17,7 +17,7 @@ const oktaAuth = new OktaAuth(oktaConfig);
 
 function App() {
   const customAuthHandler = () => {
-    history.push("login");
+    history.push("/login");
   };
 
   const history = useHistory();
