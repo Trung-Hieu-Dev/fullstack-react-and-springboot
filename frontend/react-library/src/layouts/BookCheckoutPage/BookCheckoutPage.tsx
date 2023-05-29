@@ -56,7 +56,7 @@ export const BookCheckoutPage = () => {
   // Review logic
   useEffect(() => {
     const fetchBookReviews = async () => {
-      const reviewUrl = `http://localhost:8080/api/reviews/search/findBookById?bookId=${bookId}`;
+      const reviewUrl = `http://localhost:8080/api/reviews/search/findAllByBookId?bookId=${bookId}`;
 
       const responseReviews = await fetch(reviewUrl);
 
@@ -67,6 +67,8 @@ export const BookCheckoutPage = () => {
       const responseJsonReviews = await responseReviews.json();
 
       const responseData = responseJsonReviews._embedded.reviews;
+
+      console.log(responseData);
 
       const loadedReviews: ReviewModel[] = [];
 
