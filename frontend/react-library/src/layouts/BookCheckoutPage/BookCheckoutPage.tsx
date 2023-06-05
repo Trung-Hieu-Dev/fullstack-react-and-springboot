@@ -85,9 +85,7 @@ export const BookCheckoutPage = () => {
       }
 
       if (loadedReviews) {
-        const round = (
-          Math.round((weightedStarReviews / loadedReviews.length) * 2) / 2
-        ).toFixed(1);
+        const round = (weightedStarReviews / loadedReviews.length).toFixed(1);
         setTotalStars(Number(round));
       }
 
