@@ -1,7 +1,6 @@
 package com.api.springbootlibrary.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 
@@ -17,11 +16,9 @@ public class Checkout {
     private String userEmail;
 
     @Column(name = "checkout_date")
-    @CreationTimestamp
     private String checkoutDate;
 
     @Column(name = "return_date")
-    @CreationTimestamp
     private String returnDate;
 
     @Column(name = "book_id")
